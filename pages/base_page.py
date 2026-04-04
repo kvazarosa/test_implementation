@@ -19,4 +19,8 @@ class BasePage:
         return self.wait.until(expected_conditions.visibility_of_element_located(locator)).text
 
     def is_visible(self, locator):
-        return self.wait.until(expected_conditions.visibility_of_element_located(locator))
+        try:
+            self.wait.until(expected_conditions.visibility_of_element_located(locator))
+            return True
+        except:
+            return False
