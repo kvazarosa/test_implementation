@@ -1,32 +1,28 @@
 from pages.base_page import BasePage
-from locators.main_page_locators import MainPageLocators as Loc
+from locators.main_page_locators import MainPageLocators
 
 
 class MainPage(BasePage):
     def go_to_statistics(self):
-        self.click(Loc.STATISTICS_BUTTON)
+        self.click(MainPageLocators.STATISTICS_BUTTON)
 
     def set_price_range(self, from_price: str, to_price: str):
-        self.input_text(Loc.INPUT_FROM, from_price)
-        self.input_text(Loc.INPUT_BEFORE, to_price)
-        self.wait.until(lambda d: len(d.find_elements(*Loc.CARD_PRICE)) > 0)
+        self.input_text(MainPageLocators.INPUT_FROM, from_price)
+        self.input_text(MainPageLocators.INPUT_BEFORE, to_price)
 
     def select_sort_by_price(self):
-        self.click(Loc.DROPDOWN_SORT_BY)
-        self.click(Loc.SORT_BY_PRICE_OPTION)
-        self.wait.until(lambda d: self.get_all_prices_int() == sorted(self.get_all_prices_int(), reverse=True))
+        self.click(MainPageLocators.DROPDOWN_SORT_BY)
+        self.click(MainPageLocators.SORT_BY_PRICE_OPTION)
 
     def select_category_animals(self):
-        self.click(Loc.DROPDOWN_CATEGORY)
-        self.click(Loc.ANIMALS_IN_CATEGORIES)
-        self.wait.until(lambda d: all(cat == "Животные" for cat in self.get_all_categories()))
+        self.click(MainPageLocators.DROPDOWN_CATEGORY)
+        self.click(MainPageLocators.ANIMALS_IN_CATEGORIES)
 
     def enable_urgent_only(self):
-        self.click(Loc.URGENT_TOGGLE)
-        self.wait.until(lambda d: self.get_all_urgent_badges_count() == len(self.get_all_prices_int()))
+        self.click(MainPageLocators.URGENT_TOGGLE)
 
     def get_all_prices_int(self) -> list:
-        price_elements = self.driver.find_elements(*Loc.CARD_PRICE)
+        price_elements = self.driver.find_elements(*MainPageLocators.CARD_PRICE)
         prices = []
         for el in price_elements:
             text = el.text
@@ -37,8 +33,8 @@ class MainPage(BasePage):
         return prices
 
     def get_all_categories(self) -> list:
-        category_elements = self.driver.find_elements(*Loc.CARD_CATEGORY)
-        return [el.text for el in category_elements]
+        category_elements = self.driver.find_elements(*MainPageLocators.CARD_CATEGORY)
+        return [el.text for el in category_elements if el.text]
 
     def get_all_urgent_badges_count(self) -> int:
-        return len(self.driver.find_elements(*Loc.URGENT_BADGE))
+        return len(self.driver.find_elements(*MainPageLocators.URGENT_BADGE))
